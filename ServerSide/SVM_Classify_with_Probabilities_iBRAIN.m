@@ -49,10 +49,10 @@ load(input_file_name);
 % Loading the plate measurement data
 PlateHandles = struct();
 for field=1:length(savedata.Measurement_names)
-	if savedata.classifySetup(field)==1
-		disp(sprintf('  Loading.. field: %s', savedata.Measurement_names{field}));
-		PlateHandles = LoadMeasurements(PlateHandles, [strPath,'Measurements_',savedata.Measurement_names{field},'.mat']);
-	end
+    if savedata.classifySetup(field)==1
+        disp(sprintf('  Loading.. field: %s', savedata.Measurement_names{field}));
+        PlateHandles = LoadMeasurements(PlateHandles, [strPath,'Measurements_',savedata.Measurement_names{field},'.mat']);
+    end
 end
 
 % Loading the MEAN STD and ObjectCount
@@ -61,10 +61,10 @@ PlateHandles2 = LoadMeasurements(PlateHandles2, [strPath,'Measurements_Mean_Std.
 PlateHandles2 = LoadMeasurements(PlateHandles2, [strPath,'Measurements_Image_ObjectCount.mat']);
 cellFields=fieldnames(PlateHandles2.Measurements);
 for iField=cellFields'
-	cellFields2=fieldnames(PlateHandles2.Measurements.(char(iField)));
-	for iField2=cellFields2'
-		PlateHandles.Measurements.(char(iField)).(char(iField2)) = PlateHandles2.Measurements.(char(iField)).(char(iField2));
-	end
+    cellFields2=fieldnames(PlateHandles2.Measurements.(char(iField)));
+    for iField2=cellFields2'
+        PlateHandles.Measurements.(char(iField)).(char(iField2)) = PlateHandles2.Measurements.(char(iField)).(char(iField2));
+    end
 end
 clear PlateHandles2;
 
@@ -90,57 +90,57 @@ handles.Measurements.SVMp.(featurename)=['Probability_of_',savedata.classNames{1
 images=length(PlateHandles.Measurements.Image.ObjectCount);
 
 for image=1:images
-	disp(sprintf('  PROCESSING IMAGE %d OF %d',image,images))
+    disp(sprintf('  PROCESSING IMAGE %d OF %d',image,images))
     objectIndex = grabColumnIndex(PlateHandles.Measurements.Image, objectName);
-	objects = PlateHandles.Measurements.Image.ObjectCount{image}(objectIndex);
-
-	feature_matrix=zeros(objects,0);
-	for nucleus=1:objects
-		index=0;
-		feature_index=0; %all loaded measurements index
-		for field=1:length(savedata.Measurement_names)
-			if savedata.classifySetup(field)==1
-				cut=strfind(savedata.Measurement_names{field},'_');
-				fieldname1=savedata.Measurement_names{field}(1:(cut-1));
-				fieldname2=savedata.Measurement_names{field}((cut+1):end);
-
-				for feature=1:size(PlateHandles.Measurements.(fieldname1).(fieldname2){image},2)
-					feature_index=feature_index+1;
-					if savedata.used_features(feature_index)
-						index=index+1;
-						try
-							feature_matrix(nucleus,index) =...
-								(PlateHandles.Measurements.(fieldname1).(fieldname2){image}(nucleus,feature)-...
-								PlateHandles.Measurements.(fieldname1).([fieldname2,'_median'])(feature))/...
-								PlateHandles.Measurements.(fieldname1).([fieldname2,'_mad'])(feature);
-
-						catch
-							feature_matrix(nucleus,index)=PlateHandles.Measurements.(fieldname1).(fieldname2){image}(nucleus,feature);
-						end
-					end
-				end
-			end
-		end
+    objects = PlateHandles.Measurements.Image.ObjectCount{image}(objectIndex);
+    
+    feature_matrix=zeros(objects,0);
+    for nucleus=1:objects
+        index=0;
+        feature_index=0; %all loaded measurements index
+        for field=1:length(savedata.Measurement_names)
+            if savedata.classifySetup(field)==1
+                cut=strfind(savedata.Measurement_names{field},'_');
+                fieldname1=savedata.Measurement_names{field}(1:(cut-1));
+                fieldname2=savedata.Measurement_names{field}((cut+1):end);
+                
+                for feature=1:size(PlateHandles.Measurements.(fieldname1).(fieldname2){image},2)
+                    feature_index=feature_index+1;
+                    if savedata.used_features(feature_index)
+                        index=index+1;
+                        try
+                            feature_matrix(nucleus,index) =...
+                                (PlateHandles.Measurements.(fieldname1).(fieldname2){image}(nucleus,feature)-...
+                                PlateHandles.Measurements.(fieldname1).([fieldname2,'_median'])(feature))/...
+                                PlateHandles.Measurements.(fieldname1).([fieldname2,'_mad'])(feature);
+                            
+                        catch
+                            feature_matrix(nucleus,index)=PlateHandles.Measurements.(fieldname1).(fieldname2){image}(nucleus,feature);
+                        end
+                    end
+                end
+            end
+        end
     end
-
-	if not(isempty(feature_matrix))
+    
+    if not(isempty(feature_matrix))
         feature_matrix(isnan(feature_matrix))=0;
-		% using the stprtool
-		% (http://cmp.felk.cvut.cz/cmp/software/stprtool/index.html)
-
+        % using the stprtool
+        % (http://cmp.felk.cvut.cz/cmp/software/stprtool/index.html)
+        
         [y2,votes,dfce] = mvsvmclass2(feature_matrix',model);
         handles.Measurements.SVM.(svmname){image}=y2'; % the final class label
-
+        
         if classes==2
             handles.Measurements.SVMp.(svmname){image}=sigmoid(dfce,sigmoid_model)';
         else
             handles.Measurements.SVMp.(svmname){image}=[]; %nothing here (yet)
         end
-
-	else
-		handles.Measurements.SVM.(svmname){image}=[];
+        
+    else
+        handles.Measurements.SVM.(svmname){image}=[];
     end
-
+    
 end
 
 
