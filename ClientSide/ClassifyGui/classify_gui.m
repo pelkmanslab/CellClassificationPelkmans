@@ -177,7 +177,7 @@ if ~isempty(PathName) & ~(PathName==0)
         handles.settings.showBlueChannel=savedata.showBlueChannel;
         
         if isfield(savedata,'showFarRedChannel')    % not saved in original classify_gui: add check for backward compatibility
-            handles.settings.showFarRedChannel = savedata.showFarRedChannel;            
+            handles.settings.showFarRedChannel = savedata.showFarRedChannel;
         end
         
         handles.settings.platenames=savedata.platenames;
@@ -1116,8 +1116,8 @@ for plate=1:plates
                 %nuclei=handles.Measurements{plate}.Image.ObjectCount{image}(find(ismember(handles.Measurements{plate}.Image.ObjectCountFeatures,'Nuclei')));
                 
                 foo=handles.Measurements{plate}.Image;
-                Nuclei_index = getIndexOfNuclei(foo);
-                
+                Nuclei_index = grabColumnIndex(foo,'Nuclei');
+
                 nuclei=handles.Measurements{plate}.Image.ObjectCount{image}(Nuclei_index);
                 if nuclei~=size(handles.settings.nucleusClassNumber{plate}{image},1)
                     disp('WARNING: nucleusClassNumber is of different size than there are objects! (refer to load_image possible bug)')
@@ -1399,7 +1399,7 @@ else
     fprintf('Classifying ...')
     
     foo=handles.Measurements{handles.settings.plate_nr}.Image;
-    Nuclei_index = getIndexOfNuclei(foo);
+    Nuclei_index = grabColumnIndex(foo, 'Nuclei');
     
     nuclei=handles.Measurements{handles.settings.plate_nr}.Image.ObjectCount{handles.settings.image_nr}(Nuclei_index);
     feature_matrix=zeros(nuclei,0);
@@ -3669,38 +3669,4 @@ amMultiplex = mcyc.checkIfMultiplex(putativePlatePath, doChaching, doPrint);
 end
 
 
-function Nuclei_index = getIndexOfNuclei(foo)
 
-Nuclei_index = grabColumnIndex(foo, 'Nuclei');
-
-% foo = foo.ObjectCountFeatures;
-% % Old code
-% for g=1:length(foo)
-%     if not(isempty(strfind(foo{g},'Nuclei')))
-%         Nuclei_index=g;
-%     end
-% end
-
-
-end
-
-
-
-function objectIndex = grabColumnIndex(matImage, objectName)
-%GRABCOLUMNINDEX Get matrix column index from 'features' cell array
-
-matImageObjectCount = cat(1, matImage.ObjectCount{:});
-cellObjectCountFeatures = matImage.ObjectCountFeatures;
-
-if size(unique(matImageObjectCount','rows'),1)==1
-    % this means that all object count columns are equal, so it doesn't
-    % matter which one we take
-    objectIndex = 1;
-    return
-end
-
-%  otherwise, look for colum index containing object names ("Nuclei"), take that
-%  column
-objectIndex = find(cellfun(@(name) strcmp(name, objectName), cellObjectCountFeatures), 1, 'first');
-
-end
