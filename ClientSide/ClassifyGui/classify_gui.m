@@ -34,7 +34,7 @@ function varargout = classify_gui(varargin)
 
 % Edit the above text to modify the response to help classify_gui
 
-% Last Modified by GUIDE v2.5 06-Aug-2013 09:45:23
+% Last Modified by GUIDE v2.5 08-Apr-2015 13:07:57
 
 % Check for toolbox dependencies
 checkDependencies()
