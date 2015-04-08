@@ -271,7 +271,7 @@ end
 % share-3-$
 if ispc
     % add ".d.ethz.ch", if not present, strrep it out of here :-)
-    strLocalBaseShare2 = '\\nas-unizh-imsb1.ethz.ch\share-2-$\';     legacy
+    strLocalBaseShare2 = '\\nas-unizh-imsb1.ethz.ch\share-2-$\';    % legacy
     strLocalBaseShare3 = '\\nas-unizh-imsb1.ethz.ch\share-3-$\';
     
     % [TS150408: name server has become inaccessible via UZH: use IP]
