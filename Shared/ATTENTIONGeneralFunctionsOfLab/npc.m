@@ -2,9 +2,6 @@ function localPath = npc(networkPath)
 %NPC is a network path conversion function mapping remote path to its local
 %counterpart.
 %
-% This version contian a patch by Thomas:
-% x Does not give constant misleading warnings
-% x Uses same optional settings file as npc
 %
 % Network Path Conversion function is used to wrap around inline string
 % constants with full path to a file. Input is always a path as it is valid
@@ -87,7 +84,7 @@ else
 end
 
 if ~os.path.exists(localPath)
-    warning('npc: Returning a non-existing local path "%s"', localPath);
+    fprintf('npc: Returning a non-existing local path "%s" \n', localPath);
 end
 
 end
@@ -186,6 +183,9 @@ elseif ~isempty(regexpi(strRootPath,'^\\\\nas21nwg01.ethz.ch'))
     strShareRegexp = '^\\\\nas21nwg01.ethz.ch\\biol_uzh_pelkmans_s(\d)\\';
     %     disp('input path is PC')
     
+elseif ~isempty(regexpi(strRootPath,'^\\\\195.176.109.11'))     % one of the IPs for accessing eth shares via Windows using UZH network
+    intPathFormat = 2; % PC format
+    strShareRegexp = '^\\\\195.176.109.11\\biol_uzh_pelkmans_s(\d)\\';
     
     % typical Mac path references (not SONAS)
 elseif ~isempty(regexp(strRootPath,'^/Volumes/share-'))
@@ -271,13 +271,22 @@ end
 % share-3-$
 if ispc
     % add ".d.ethz.ch", if not present, strrep it out of here :-)
-    strLocalBaseShare2 = '\\nas-unizh-imsb1.ethz.ch\share-2-$\';
+    strLocalBaseShare2 = '\\nas-unizh-imsb1.ethz.ch\share-2-$\';     legacy
     strLocalBaseShare3 = '\\nas-unizh-imsb1.ethz.ch\share-3-$\';
-    strLocalBaseShare4 = '\\nas21nwg01.ethz.ch\biol_uzh_pelkmans_s4\';
-    strLocalBaseShare5 = '\\nas21nwg01.ethz.ch\biol_uzh_pelkmans_s5\';
-    strLocalBaseShare6 = '\\nas21nwg01.ethz.ch\biol_uzh_pelkmans_s6\';
-    strLocalBaseShare7 = '\\nas21nwg01.ethz.ch\biol_uzh_pelkmans_s7\';
-    strLocalBaseShare8 = '\\nas21nwg01.ethz.ch\biol_uzh_pelkmans_s8\';
+    
+    % [TS150408: name server has become inaccessible via UZH: use IP]
+    %     strLocalBaseShare4 = '\\nas21nwg01.ethz.ch\biol_uzh_pelkmans_s4\';
+    %     strLocalBaseShare5 = '\\nas21nwg01.ethz.ch\biol_uzh_pelkmans_s5\';
+    %     strLocalBaseShare6 = '\\nas21nwg01.ethz.ch\biol_uzh_pelkmans_s6\';
+    %     strLocalBaseShare7 = '\\nas21nwg01.ethz.ch\biol_uzh_pelkmans_s7\';
+    %     strLocalBaseShare8 = '\\nas21nwg01.ethz.ch\biol_uzh_pelkmans_s8\';
+    strLocalBaseShare4 = '\\195.176.109.11\biol_uzh_pelkmans_s4\';
+    strLocalBaseShare5 = '\\195.176.109.11\biol_uzh_pelkmans_s5\';
+    strLocalBaseShare6 = '\\195.176.109.11\biol_uzh_pelkmans_s6\';
+    strLocalBaseShare7 = '\\195.176.109.11\biol_uzh_pelkmans_s7\';
+    strLocalBaseShare8 = '\\195.176.109.11\biol_uzh_pelkmans_s8\';
+
+
 elseif ismac
     if any(fileattrib('~/shares/'))
         try
