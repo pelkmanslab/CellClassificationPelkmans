@@ -49,7 +49,7 @@ try
         case true
             tempHandles = loadFileWithCaching(strFileName);     % addition, tested/used in classifygui"Dev"
         otherwise
-            error('cacheInRAM does not follow any accepted format')
+            error('cacheInRAM must either be true or false')
     end
      
 catch ME
