@@ -1157,7 +1157,6 @@ for plate=1:plates
 end
 
 % using the stprtool (http://cmp.felk.cvut.cz/cmp/software/stprtool/index.html)
-% and svmlight (http://svmlight.joachims.org/)
 
 %try feature_matrix;
 if not(isempty(find(isnan(feature_matrix))))
@@ -1200,16 +1199,6 @@ args=50;%[1 10 100]; %50
 data2.X=feature_matrix(train_indices,:)';
 data2.y=target(train_indices);
 
-%ldamodel = lda(data2,30);
-%handles.settings.svm_ldamodel = ldamodel;
-
-%data_lda.X=linproj(data.X,ldamodel);
-%data_lda.y=data.y;
-%handles.settings.svm_datalda=data_lda;
-
-%data3.X=linproj(data2.X,ldamodel);
-%data3.y=data2.y;
-
 options = struct;
 options.tmax = 50;
 %options.solver = 'smo';
@@ -1219,24 +1208,10 @@ elseif ispc
     
     options.bin_svm = 'smo';
 end
-%	cd c:\Ma'tlab Toolboxes'\svmlight\
-%	options.bin_svm = 'svmlight';
-%end
 
 options.ker = 'rbf'; %rbf 'linear'
 options.verb=1;
 %options.solver = 'mdm';
-
-
-% 	disp('Performing normal SVM-training...');
-% 	options.C = 0.1; %45
-% 	options.arg = 0.1; %15
-% 	model = oaosvm_Pauli(data2, options); %The Pauli version manages different class sizes more intelligently
-% 	score=calculateScore(data,model,test_indices)
-% 	handles.settings.used_features=ones(1,size(data2.X,1));
-% 	handles.settings.svm_model=model;
-
-
 
 
 disp('Performing SVM-training with parameter optimization...');
@@ -1245,8 +1220,7 @@ for i=1:length(Cs)
     for j=1:length(args)
         options.C = Cs(i);
         options.arg = args(j);
-        %models{i,j} = bsvm2(data2,options);
-        models{i,j} = oaosvm_Pauli(data2, options); %The Pauli version manages different class sizes more intelligently
+        models{i,j} = oaosvm_Pauli(data2, options); 
         scores(i,j)=calculateScore(data,models{i,j},test_indices);
         if isnan(scores(i,j))
             scores(i,j)=0;
@@ -1297,19 +1271,14 @@ disp('SVM training is finished.')
 additionalInfo  = round(scores);
 updateTitleOfGui(handles,'trainingdone',additionalInfo);
 
-%load gong.mat
-%sound(y,Fs);
 draw();
-%catch
-%	disp('No data for SVM training.')
-%end
-%keyboard
+
 end
 
 % --------------------------------------------------------------------
 function score=calculateScore(data,model,test_indices)
 %try
-[y2,votes] = mvsvmclass(data.X,model); %classification.. model is done with the training data only
+[y2,votes] = mvsvmclass2(data.X,model); %classification.. model is done with the training data only
 %catch
 %	[y2,votes] = svmclass(data.X,model); %classification.. model is done with the training data only
 %end
@@ -1436,7 +1405,7 @@ else
     %ldamodel=handles.settings.svm_ldamodel;
     %data=linproj(feature_matrix',ldamodel);
     %keyboard
-    [y2,votes] = mvsvmclass(feature_matrix',model);
+    [y2,votes] = mvsvmclass2(feature_matrix',model);
     handles.settings.nucleusClassNumber{handles.settings.plate_nr}{handles.settings.image_nr}(:,2)=y2';
     
     %keyboard
@@ -2417,7 +2386,7 @@ train_indices=handles.settings.svm_trainIndices;
 model=handles.settings.svm_model;
 
 %try
-[y2,votes] = mvsvmclass(data.X,model); %classification.. model is done with the training data only %%(find(handles.settings.used_features),:)
+[y2,votes] = mvsvmclass2(data.X,model); %classification.. model is done with the training data only %%(find(handles.settings.used_features),:)
 %catch
 %	[y2,votes] = svmclass(data.X,model); %classification.. model is done with the training data only
 %end

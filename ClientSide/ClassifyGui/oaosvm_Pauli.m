@@ -1,4 +1,4 @@
-function model = oaosvm(data,options)
+function model = oaosvm_Pauli(data,options)
 % OAOSVM Multi-class SVM using One-Against-One decomposition.
 % 
 % Synopsis:
