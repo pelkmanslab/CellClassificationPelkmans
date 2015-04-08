@@ -13,7 +13,7 @@ function [handles,ListOfObjects,ListOfMeasurements] = LoadMeasurements(handles, 
 
 
 if nargin < 3
-    cacheInRAM = false;
+    cacheInRAM = false;  % default, have to keep false for backward compatibility with ealier versions of function
 elseif ~islogical(cacheInRAM)
     error('cacheInRAM must be either true or false');
 end
