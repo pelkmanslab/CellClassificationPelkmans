@@ -156,15 +156,15 @@ if ~isempty(PathName) & ~(PathName==0)
         
         % [BS] if these paths are existing, use those... otherwise, use the
         % location of the SVM file :)
-        if fileattrib(nnpc(savedata.data_path))
-            handles.settings.data_path=nnpc(savedata.data_path);
+        if fileattrib(npc(savedata.data_path))
+            handles.settings.data_path=npc(savedata.data_path);
         else
             disp('using SVM location as data path)')
             handles.settings.data_path=PathName;
         end
         
-        if fileattrib(nnpc(savedata.image_path))
-            handles.settings.image_path=nnpc(savedata.image_path);
+        if fileattrib(npc(savedata.image_path))
+            handles.settings.image_path=npc(savedata.image_path);
         else
             disp('using SVM location as image path)')
             handles.settings.image_path=PathName;
@@ -281,7 +281,7 @@ if ~isempty(PathName) & ~(PathName==0)
     end
     
     try
-        %load([nnpc(handles.settings.data_path),filesep,'BASICDATA.mat']);
+        %load([npc(handles.settings.data_path),filesep,'BASICDATA.mat']);
         load(getBasicdataForClassifyGui(handles.settings.data_path));
         disp('Loading BASICDATA...')
         
@@ -324,11 +324,11 @@ if ~isempty(PathName) & ~(PathName==0)
     end
     
     % loading the set of available iBrain SVM classifications
-    %     list=dir([nnpc(handles.settings.data_path),filesep,'SVM_*.mat']);
+    %     list=dir([npc(handles.settings.data_path),filesep,'SVM_*.mat']);
     %[TS 150121: fix, if BATCH was used as data path - which is usually
     %supported]
     
-    candidateDir = nnpc(handles.settings.data_path);
+    candidateDir = npc(handles.settings.data_path);
     posBATCH = regexp(candidateDir,'BATCH$', 'once');
     if ~isempty(posBATCH)
         candidateDir = candidateDir(1:(posBATCH-1));
@@ -366,7 +366,7 @@ if ~isempty(PathName) & ~(PathName==0)
                     PlateHandles = LoadMeasurements_withCaching(PlateHandles, fullfile(strPlateNames,['Measurements_SVM_',handles.settings.SVM_available{svm},'.mat']));
                 else
                     % try old code
-                    PlateHandles = LoadMeasurements_withCaching(PlateHandles, format_path(nnpc(handles.settings.data_path),filesep,handles.settings.platenames{1},filesep,'BATCH',filesep,['Measurements_SVM_',handles.settings.SVM_available{svm},'.mat']));
+                    PlateHandles = LoadMeasurements_withCaching(PlateHandles, format_path(npc(handles.settings.data_path),filesep,handles.settings.platenames{1},filesep,'BATCH',filesep,['Measurements_SVM_',handles.settings.SVM_available{svm},'.mat']));
                 end
             end
         end
@@ -508,8 +508,8 @@ if(not(isempty(PathName) & isempty(PathName)))
     savedata.rescaleFarRed_level = handles.settings.rescaleFarRed_level;
     
     savedata.classNames = handles.settings.classNames;
-    savedata.data_path = nnpc(handles.settings.data_path);
-    savedata.image_path = nnpc(handles.settings.image_path);
+    savedata.data_path = npc(handles.settings.data_path);
+    savedata.image_path = npc(handles.settings.image_path);
     savedata.image_nr = handles.settings.image_nr;
     savedata.plate_nr = handles.settings.plate_nr;
     savedata.showRedChannel = handles.settings.showRedChannel;
@@ -549,9 +549,9 @@ function file_configure_Callback(hObject, eventdata, handles)
 returndata = classify_gui_config();
 initialize();
 
-handles.settings.data_path = nnpc(returndata.data_path);
-handles.settings.image_path = nnpc(returndata.image_path);
-if ~isempty(strfind(nnpc(handles.settings.data_path),'Salmonella')) %the first plate of Salmonella does not have TIFFs
+handles.settings.data_path = npc(returndata.data_path);
+handles.settings.image_path = npc(returndata.image_path);
+if ~isempty(strfind(npc(handles.settings.data_path),'Salmonella')) %the first plate of Salmonella does not have TIFFs
     handles.settings.plate_nr=19;
 end
 set(handles.Untitled_2, 'Enable', 'on');
@@ -761,7 +761,7 @@ for svm=1:length(handles.settings.SVM_available)
             PlateHandles = LoadMeasurements_withCaching(PlateHandles, fullfile(strPlateNames,['Measurements_SVM_',handles.settings.SVM_available{svm},'.mat']));
         else
             % try old code
-            PlateHandles = LoadMeasurements_withCaching(PlateHandles, format_path(nnpc(handles.settings.data_path),filesep,handles.settings.platenames{1},filesep,'BATCH',filesep,['Measurements_SVM_',handles.settings.SVM_available{svm},'.mat']));
+            PlateHandles = LoadMeasurements_withCaching(PlateHandles, format_path(npc(handles.settings.data_path),filesep,handles.settings.platenames{1},filesep,'BATCH',filesep,['Measurements_SVM_',handles.settings.SVM_available{svm},'.mat']));
             %             PlateHandles = LoadMeasurements_withCaching(PlateHandles, [handles.settings.data_path,filesep,handles.settings.platenames{1},filesep,'BATCH',filesep,'Measurements_SVM_',handles.settings.SVM_available{svm},'.mat']);
         end
         
@@ -2007,7 +2007,7 @@ catch
                     PlateHandles = LoadMeasurements_withCaching(PlateHandles, fullfile(strPlateNames,['Measurements_SVM_',handles.settings.SVM_available{svm},'.mat']));
                 else
                     % try old code
-                    PlateHandles = LoadMeasurements_withCaching(PlateHandles, format_path(nnpc(handles.settings.data_path),filesep,handles.settings.platenames{handles.settings.plate_nr},filesep,'BATCH',filesep,['Measurements_SVM_',handles.settings.SVM_available{svm},'.mat']));
+                    PlateHandles = LoadMeasurements_withCaching(PlateHandles, format_path(npc(handles.settings.data_path),filesep,handles.settings.platenames{handles.settings.plate_nr},filesep,'BATCH',filesep,['Measurements_SVM_',handles.settings.SVM_available{svm},'.mat']));
                 end
                 
             end
@@ -3383,7 +3383,7 @@ function potentialNetworkPath = onlyNpcPotentialNetworkPath(potentialNetworkPath
 % for some strange reason, the orginal classify_gui npcs titles, which
 % results in many warnings. Here only npc potential network pathes
 if any(ismember(potentialNetworkPath,'/\:'))
-    potentialNetworkPath = nnpc(potentialNetworkPath);
+    potentialNetworkPath = npc(potentialNetworkPath);
 end
 end
 
@@ -3541,7 +3541,7 @@ if isempty(OriginalPathOfChached)
     OriginalPathOfChached = cell(0);
 end
 
-nStrFileName = nnpc(strFileName);
+nStrFileName = npc(strFileName);
 
 [isCached, cachedLoc]= ismember(nStrFileName,OriginalPathOfChached);
 
