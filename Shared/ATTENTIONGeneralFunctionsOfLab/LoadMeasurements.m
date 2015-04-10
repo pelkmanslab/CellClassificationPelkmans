@@ -140,6 +140,10 @@ end
 
 nStrFileName = npc(strFileName);
 
+if ~any(fileattrib(nStrFileName))
+    error('File with measurements appears absent. Please check spelling of the filename (input).');
+else
+
 [isCached, cachedLoc]= ismember(nStrFileName,OriginalPathOfChached);
 
 if ~isCached   % load into cache, if absent there
@@ -155,4 +159,5 @@ if ~isCached   % load into cache, if absent there
 end
 
 dat = CachedMeasurments{cachedLoc}; % retreive data
+end
 end
