@@ -3035,27 +3035,9 @@ function Untitled_7_Callback(hObject, eventdata, handles)
 end
 
 function checkDependencies
-% Checking for required toolboxes
-expected_version='2.11';
-try
-    if verLessThan('stprtool', expected_version)
-        warndlg(sprintf(...
-            ['Wrong version of Statistical Pattern Recognition Too'...
-            'lbox for machine learning (stprtool). Expected versio'...
-            'n is %s'], expected_version), 'Wrong stprtool version')
-    end
-catch exception
-    if ~isempty(regexp(exception.message, 'not found', 'match'))
-        warndlg(...
-            ['Missing Statistical Pattern Recognition Toolbox for '...
-            'machine learning (stprtool). Make sure it is own your'...
-            ' MATLAB path or download it at http://cmp.felk.cvut.c'...
-            'z /cmp/software/stprtool/index.html'], 'Missing tlbx')
-    else
-        warndlg(sprintf('Unknown dependency error: %s.', ...
-            exception.message),'Unknown dependency error')
-    end
-end
+
+
+
 end
 
 
