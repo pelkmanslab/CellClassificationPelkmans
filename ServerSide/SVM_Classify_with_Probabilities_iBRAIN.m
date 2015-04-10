@@ -34,10 +34,10 @@ end
 strOutputFileName=['Measurements_SVM_',svmname,'.mat'];
 boolOutputFileExists = fileattrib(fullfile(strPath,strOutputFileName));
 
-%if boolOutputFileExists
-%    disp(sprintf('SVM_Classify_iBRAIN: STOPPING: OUTPUT FILE ALREADY PRESENT FOR %s IN %s',svmname,fullfile(strPath,strOutputFileName)))
-%    return
-%end
+if boolOutputFileExists
+   disp(sprintf('SVM_Classify_iBRAIN: STOPPING: OUTPUT FILE ALREADY PRESENT FOR %s IN %s',svmname,fullfile(strPath,strOutputFileName)))
+   return
+end
 
 % remove weird characters from svmname...
 svmname = strrep(svmname,'-','_');
