@@ -4,4 +4,4 @@ SingleCellClassification code prepared for transition of ClassifyGui + integrati
 
 ## Dependencies
 
-* stprtool (compiled according to operating system)
+* stprtool (compiled according to operating system); see http://cmp.felk.cvut.cz/cmp/software/stprtool/
