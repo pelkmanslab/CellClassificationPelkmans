@@ -11,4 +11,4 @@ In addition a test set was created and tests performed to ensure that iBrain-ETH
 ## Dependencies
 
 * stprtool (compiled according to operating system); see http://cmp.felk.cvut.cz/cmp/software/stprtool/
-* Shared code of lab (for curated versions of critical functions for single-cell-classification, where we have various versions circulating around in the lab (on April 2015) see /Shared/ATTENTIONGeneralFunctionsOfLab)
+* Shared code of lab (for curated versions of critical functions - compatible with current single-cell-classification - but where we have various versions circulating around in the lab (on April 2015), see /Shared/ATTENTIONGeneralFunctionsOfLab)
