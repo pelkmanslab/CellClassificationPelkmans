@@ -12,3 +12,4 @@ In addition a test set was created and tests performed to ensure that iBrain-ETH
 
 * stprtool (compiled according to operating system); see http://cmp.felk.cvut.cz/cmp/software/stprtool/
 * Shared code of lab (for curated versions of critical functions - compatible with current single-cell-classification - but where we have various versions circulating around in the lab (on April 2015), see /Shared/ATTENTIONGeneralFunctionsOfLab)
+* General output of iBrain (datafusion / reformatting of CP measurements to iBrain/ETH format, site-names, per-plate mean, per-plate stdev of individal features)
