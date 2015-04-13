@@ -11,5 +11,6 @@ In addition a test set was created and tests performed to ensure that iBrain-ETH
 ## Dependencies
 
 * stprtool (compiled according to operating system); see http://cmp.felk.cvut.cz/cmp/software/stprtool/
-* Shared code of lab (for curated versions of critical functions - compatible with current single-cell-classification - but where we have various versions circulating around in the lab (on April 2015), see /Shared/ATTENTIONGeneralFunctionsOfLab)
+* Shared code of lab - critical for classifcation; but where we have various versions circulating around in the lab (on April 2015), see /Shared/ATTENTIONGeneralFunctionsOfLab; note that these will become part of a separate repositorty (iBrain meeting Apr13)
+* shared code of lab; where there are not different versions circulating around in the lab (on April 2015): any of our shared/general repositories. note that these will become part of a separate repositorty (iBrain meeting Apr13)
 * General output of iBrain (BASICDATA, datafusion / reformatting of CP measurements to iBrain/ETH format, site-names, per-plate mean, per-plate stdev of individal features, metainfomration about oligos/siRNAs)
