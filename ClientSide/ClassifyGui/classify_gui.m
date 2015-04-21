@@ -1037,7 +1037,7 @@ for plate=1:plates
                         fieldname2=handles.settings.Measurement_names{field}((cut+1):end);
                         try handles.Measurements{plate}.(fieldname1).(fieldname2){image};
                             if isempty(handles.Measurements{plate}.(fieldname1).(fieldname2){image});
-                                jump_to_catch; %so ugly
+                                jump_to_catch; %so ugly % [TS150421: it appears that the function jump_to_catch must not exist; have left original comment];
                             end
                         catch %this data item is not loaded
                             try handles.settings.PlateHandles.Measurements.(fieldname1).(fieldname2){image};
