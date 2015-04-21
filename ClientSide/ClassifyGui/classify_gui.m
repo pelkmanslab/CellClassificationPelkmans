@@ -3213,7 +3213,7 @@ if handles.settings.showSegmentation
             
             
             [path_cells_segmentation, considerLoadingSegmentation] = ...
-                getPathToSegmentationFileFromOtherCycle(shift,raw_name_withoutEnding,currentTIFFfolder,currSegmentation);
+                mcyc.getPathToSegmentationFileFromOtherCycle(shift,raw_name_withoutEnding,currentTIFFfolder,currSegmentation);
         end
         
         % Check, if file exists
