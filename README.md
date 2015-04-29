@@ -10,6 +10,5 @@ In addition a test set was created and tests performed to ensure that iBrain-ETH
 
 ## Dependencies
 
-* stprtool (compiled according to operating system); see http://cmp.felk.cvut.cz/cmp/software/stprtool/
-* PelkmansLibrary
+* PelkmansLibrary (including stprtool compiled according to operating system; see http://cmp.felk.cvut.cz/cmp/software/stprtool/ )
 * MATLAB toolboxes (image processing, statistics)
