@@ -1,8 +1,4 @@
-# SingleCellClassificationTransition
-SingleCellClassification code prepared for transition of ClassifyGui + integration into iBRAIN UZH
-
-
-## Notes for transition to UZH
+# CellClassificationPelkmans
 
 Code for single-cell classification on client-side (classify_gui) and server/iBrain-side has been compared and repacked in the repository “SingleCellClassificationTransition”. Duplications on client and server-side were removed and replaced by calls to same function. The client-side uses the former “classify_gui –Dev version” as this version has been the most maintained and most heavily used version during the last 2 years. 
 
