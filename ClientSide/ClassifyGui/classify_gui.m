@@ -1117,7 +1117,7 @@ for plate=1:plates
                 
                 foo=handles.Measurements{plate}.Image;
                 Nuclei_index = grabColumnIndex(foo,'Nuclei');
-
+                
                 nuclei=handles.Measurements{plate}.Image.ObjectCount{image}(Nuclei_index);
                 if nuclei~=size(handles.settings.nucleusClassNumber{plate}{image},1)
                     disp('WARNING: nucleusClassNumber is of different size than there are objects! (refer to load_image possible bug)')
@@ -1220,7 +1220,7 @@ for i=1:length(Cs)
     for j=1:length(args)
         options.C = Cs(i);
         options.arg = args(j);
-        models{i,j} = oaosvm_Pauli(data2, options); 
+        models{i,j} = oaosvm_Pauli(data2, options);
         scores(i,j)=calculateScore(data,models{i,j},test_indices);
         if isnan(scores(i,j))
             scores(i,j)=0;
@@ -1869,7 +1869,8 @@ else
     
     %keyboard
     figure
-    uitable('Data',table,'Units','normalized','Position',[0 0 1 1]); end
+    uitable('Data',table,'Units','normalized','Position',[0 0 1 1]);
+end
 
 end
 
@@ -3082,17 +3083,18 @@ function handles=loadImagesFromDiskToHandles(handles)
 handles = loadSegmentationFromDiskToHandles(handles);
 handles = getImageDimensions(handles,handles.picture.Segmentation);
 
-
-% [TS-comment: I have left this piece of code unchanged since its function
-% seems unclear to me. It seems to be a way to initialize the number of
-% nuclei]
-try  %
-    handles.settings.nucleusClassNumber{handles.settings.plate_nr}{handles.settings.image_nr}(1,1);
-catch %#ok<*CTCH>
+% [TS: left the original logic for initializing classifications that should
+% be displayed (try / catch to check if viewed before)
+try  
+    handles.settings.nucleusClassNumber{handles.settings.plate_nr}{handles.settings.image_nr}(1,1); 
+catch %#ok<CTCH>
+    % [Original code and original insane comment]
     % THIS MIGHT BE WRONG SOMETIMES. USE OBJECT COUNT
-    handles.settings.nucleusClassNumber{handles.settings.plate_nr}{handles.settings.image_nr} = zeros(length(handles.Measurements{handles.settings.plate_nr}.Nuclei.Location{handles.settings.image_nr}),2);
+    %     handles.settings.nucleusClassNumber{handles.settings.plate_nr}{handles.settings.image_nr} = zeros(length(handles.Measurements{handles.settings.plate_nr}.Nuclei.Location{handles.settings.image_nr}),2);
+
+    % [Fix by TS150506: count rows (and thus objects) - otherwise there will later be very weird bugs if only one object is present (since initialized by 2)]
+    handles.settings.nucleusClassNumber{handles.settings.plate_nr}{handles.settings.image_nr} = zeros(size(handles.Measurements{handles.settings.plate_nr}.Nuclei.Location{handles.settings.image_nr},1),2);
 end
-% [TS-comment-end]
 
 
 handles = obtainChannelImage(handles,'Blue');
